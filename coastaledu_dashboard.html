@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CoastalEdu — Student Records Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<body>
+
+<!-- SCENE BG -->
+<div class="scene-bg"></div>
+<div class="scene-sun"></div>
+<div class="wave-strip" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="w-path1" d="M0,40 C200,70 400,10 640,45 C880,80 1100,15 1440,40 L1440,80 L0,80Z" fill="rgba(19,114,170,0.07)"/>
+    <path class="w-path2" d="M0,55 C240,25 480,75 720,50 C960,25 1200,65 1440,45 L1440,80 L0,80Z" fill="rgba(19,114,170,0.05)"/>
+  </svg>
+</div>
+<svg class="palm-sil left" width="120" height="240" viewBox="0 0 120 240">
+  <rect x="54" y="90" width="12" height="150" rx="6" fill="#1e7a4a"/>
+  <ellipse cx="60" cy="80" rx="7" ry="10" fill="#155c38"/>
+  <ellipse cx="28" cy="72" rx="38" ry="12" transform="rotate(-28,28,72)" fill="#1e7a4a"/>
+  <ellipse cx="94" cy="65" rx="36" ry="12" transform="rotate(28,94,65)" fill="#1e7a4a"/>
+  <ellipse cx="15" cy="55" rx="30" ry="10" transform="rotate(-42,15,55)" fill="#1e7a4a"/>
+  <ellipse cx="105" cy="50" rx="30" ry="10" transform="rotate(42,105,50)" fill="#1e7a4a"/>
+  <ellipse cx="60" cy="42" rx="32" ry="11" transform="rotate(-8,60,42)" fill="#1e7a4a"/>
+</svg>
+<svg class="palm-sil right" width="120" height="240" viewBox="0 0 120 240">
+  <rect x="54" y="90" width="12" height="150" rx="6" fill="#1e7a4a"/>
+  <ellipse cx="60" cy="80" rx="7" ry="10" fill="#155c38"/>
+  <ellipse cx="28" cy="72" rx="38" ry="12" transform="rotate(-28,28,72)" fill="#1e7a4a"/>
+  <ellipse cx="94" cy="65" rx="36" ry="12" transform="rotate(28,94,65)" fill="#1e7a4a"/>
+  <ellipse cx="15" cy="55" rx="30" ry="10" transform="rotate(-42,15,55)" fill="#1e7a4a"/>
+  <ellipse cx="105" cy="50" rx="30" ry="10" transform="rotate(42,105,50)" fill="#1e7a4a"/>
+  <ellipse cx="60" cy="42" rx="32" ry="11" transform="rotate(-8,60,42)" fill="#1e7a4a"/>
+</svg>
+
+<!-- ════ AUTH MODAL ════ -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🌴</div>
+        <div class="auth-logo-text">
+          <div class="brand">CoastalEdu</div>
+          <div class="tagline">Student Records System</div>
+        </div>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Register</button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="auth-body">
+
+      <!-- ── LOGIN FORM ── -->
+      <div class="auth-form active" id="form-login">
+        <div class="auth-title">Welcome back 👋</div>
+        <div class="auth-subtitle">Sign in to your CoastalEdu account to continue.</div>
+
+        <div class="auth-msg" id="login-msg"></div>
+
+        <div class="auth-field">
+          <label>Email Address</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">✉️</span>
+            <input type="email" id="login-email" placeholder="teacher@school.edu.ph" autocomplete="email"/>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Password</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">🔒</span>
+            <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password"/>
+            <button class="pw-toggle" type="button" onclick="togglePw('login-password', this)">👁</button>
+          </div>
+        </div>
+
+        <div class="auth-forgot">
+          <a href="#" onclick="forgotPassword(event)">Forgot password?</a>
+        </div>
+
+        <div class="auth-field" style="margin-bottom:0;">
+          <label>Teacher / School Name</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">🏫</span>
+            <input type="text" id="login-teacher" placeholder="e.g. Mrs. Santos — Grade 9 Science"/>
+          </div>
+        </div>
+
+        <div class="auth-divider"><span>or continue with</span></div>
+
+        <div class="auth-field" style="margin-bottom:0;">
+          <label>Apps Script URL (optional)</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">☁️</span>
+            <input type="url" id="login-gsurl" placeholder="https://script.google.com/macros/s/…/exec"/>
+          </div>
+        </div>
+
+        <button class="auth-submit" style="margin-top:20px;" onclick="doLogin()">
+          🚀 Sign In to Dashboard
+        </button>
+
+        <div class="auth-terms">
+          Don't have an account? <a href="#" onclick="switchTab('register'); return false;">Create one free →</a>
+        </div>
+      </div>
+
+      <!-- ── REGISTER FORM ── -->
+      <div class="auth-form" id="form-register">
+        <div class="auth-title">Create your account 🌊</div>
+        <div class="auth-subtitle">Set up your CoastalEdu account in seconds.</div>
+
+        <div class="auth-msg" id="register-msg"></div>
+
+        <div class="auth-row-2">
+          <div class="auth-field">
+            <label>First Name</label>
+            <div class="auth-field-wrap">
+              <span class="field-icon">👤</span>
+              <input type="text" id="reg-firstname" placeholder="Maria"/>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>Last Name</label>
+            <div class="auth-field-wrap">
+              <span class="field-icon">👤</span>
+              <input type="text" id="reg-lastname" placeholder="Santos"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Email Address</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">✉️</span>
+            <input type="email" id="reg-email" placeholder="teacher@school.edu.ph"/>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>School / Institution</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">🏫</span>
+            <input type="text" id="reg-school" placeholder="e.g. Davao City National High School"/>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Role</label>
+          <div class="role-pills">
+            <div class="role-pill selected" data-role="teacher" onclick="selectRole(this)">👨‍🏫 Teacher</div>
+            <div class="role-pill" data-role="admin" onclick="selectRole(this)">🛡 Admin</div>
+            <div class="role-pill" data-role="staff" onclick="selectRole(this)">📋 Staff</div>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Password</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">🔒</span>
+            <input type="password" id="reg-password" placeholder="Create a strong password"
+              oninput="checkStrength(this.value)"/>
+            <button class="pw-toggle" type="button" onclick="togglePw('reg-password', this)">👁</button>
+          </div>
+          <div class="pw-strength" id="pw-strength">
+            <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+            <div class="strength-label" id="strength-label">Weak</div>
+          </div>
+        </div>
+
+        <div class="auth-field" style="margin-bottom:0;">
+          <label>Confirm Password</label>
+          <div class="auth-field-wrap">
+            <span class="field-icon">🔒</span>
+            <input type="password" id="reg-confirm" placeholder="Re-enter your password"/>
+            <button class="pw-toggle" type="button" onclick="togglePw('reg-confirm', this)">👁</button>
+          </div>
+        </div>
+
+        <button class="auth-submit" style="margin-top:20px;" onclick="doRegister()">
+          🌴 Create Account
+        </button>
+
+        <div class="auth-terms">
+          By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br/>
+          Already have an account? <a href="#" onclick="switchTab('login'); return false;">Sign in →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Decorative wave -->
+    <svg class="auth-wave" viewBox="0 0 440 60" preserveAspectRatio="none">
+      <path d="M0,30 C80,55 180,5 280,35 C350,55 400,20 440,30 L440,60 L0,60Z" fill="#0a4f7c"/>
+    </svg>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div class="shell" id="appShell" style="display:none;">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🌴</div>
+      <div class="sidebar-logo-text">
+        <div class="brand">CoastalEdu</div>
+        <div class="tagline" id="teacherLabel">Student Records</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <button class="nav-item active" onclick="navTo('overview', this)">
+        <div class="nav-icon">📊</div><span>Overview</span>
+      </button>
+      <button class="nav-item" onclick="navTo('add-student', this)">
+        <div class="nav-icon">✏️</div><span>Add Student</span>
+      </button>
+      <button class="nav-item" onclick="navTo('records', this)">
+        <div class="nav-icon">📋</div><span>All Records</span>
+      </button>
+      <div class="nav-section-label" style="margin-top:10px;">Settings</div>
+      <button class="nav-item" onclick="navTo('sheets', this)">
+        <div class="nav-icon">☁️</div><span>Sheets Setup</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="connection-badge" onclick="navTo('sheets', document.querySelector('[onclick*=sheets]'))">
+        <div class="conn-dot local" id="sideConnDot"></div>
+        <div class="conn-info">
+          <div class="conn-status" id="sideConnStatus">Local Mode</div>
+          <div class="conn-sub" id="sideConnSub">Not synced</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-wave">
+      <svg viewBox="0 0 256 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,50 C60,80 130,20 200,55 C230,70 248,55 256,50 L256,100 L0,100Z" fill="rgba(255,255,255,0.1)"/>
+      </svg>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">
+  <div class="nav-icon">🚪</div>
+  <span>Log Out</span>
+</button>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="page-title" id="pageTitle">Overview</div>
+        <div class="page-breadcrumb" id="pageBreadcrumb">Dashboard · Summary</div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn ghost" onclick="syncAll()">☁ Sync to Sheets</button>
+        <button class="topbar-btn primary" onclick="navTo('add-student', document.querySelectorAll('.nav-item')[1])">+ Add Student</button>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- OVERVIEW -->
+      <section class="page-section active" id="sec-overview">
+        <div class="section-header">
+          <h2>Class Overview</h2>
+          <p>A summary of all student performance across quizzes, assignments, and tasks.</p>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi-card blue">
+            <div class="kpi-icon">👥</div>
+            <div><div class="kpi-value" id="kpi-total">0</div><div class="kpi-label">Total Students</div></div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-icon">📈</div>
+            <div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-label">Class Average</div></div>
+          </div>
+          <div class="kpi-card sand">
+            <div class="kpi-icon">🏆</div>
+            <div><div class="kpi-value" id="kpi-top">—</div><div class="kpi-label">Highest Score</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <div class="panel-icon pi-sand">🏅</div>
+              <div>
+                <div class="panel-title-text">Top Students</div>
+                <div class="panel-subtitle">Ranked by overall score</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="top-list" id="topList">
+              <div class="empty-state" style="padding:30px 0;">
+                <div class="big" style="font-size:36px;">🌊</div>
+                <p style="font-size:13px;">No records yet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADD STUDENT -->
+      <section class="page-section" id="sec-add-student">
+        <div class="section-header">
+          <h2>Add Student Record</h2>
+          <p>Fill in the student's information and academic scores. Averages are computed automatically.</p>
+        </div>
+        <div class="dash-grid">
+          <div style="display:flex; flex-direction:column; gap:18px;">
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-head-left">
+                  <div class="panel-icon pi-blue">👨‍🎓</div>
+                  <div>
+                    <div class="panel-title-text">Student Information</div>
+                    <div class="panel-subtitle">Basic personal details</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid-2">
+                  <div class="field"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g. Maria Clara Santos"/></div>
+                  <div class="field"><label>Student ID / LRN *</label><input type="text" id="f-id" placeholder="e.g. 2024-001234"/></div>
+                  <div class="field"><label>Course / Section</label><input type="text" id="f-course" placeholder="e.g. Grade 9 — Section A"/></div>
+                  <div class="field"><label>Email Address</label><input type="email" id="f-email" placeholder="student@school.edu.ph"/></div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-head-left">
+                  <div class="panel-icon pi-sand">📝</div>
+                  <div>
+                    <div class="panel-title-text">Academic Scores</div>
+                    <div class="panel-subtitle">Enter scores out of 100 per item</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body" style="display:flex; flex-direction:column; gap:20px;">
+                <div>
+                  <div class="score-group-head">
+                    <div class="score-group-label">📚 Quiz Scores</div>
+                    <span class="score-badge sb-blue" id="quiz-avg-badge">Avg: —</span>
+                  </div>
+                  <div class="scores-inputs" id="quiz-row"></div>
+                </div>
+                <div class="divider"></div>
+                <div>
+                  <div class="score-group-head">
+                    <div class="score-group-label">📋 Assignment Scores</div>
+                    <span class="score-badge sb-green" id="assign-avg-badge">Avg: —</span>
+                  </div>
+                  <div class="scores-inputs" id="assign-row"></div>
+                </div>
+                <div class="divider"></div>
+                <div>
+                  <div class="score-group-head">
+                    <div class="score-group-label">🎭 Performance Task Scores</div>
+                    <span class="score-badge sb-sand" id="perf-avg-badge">Avg: —</span>
+                  </div>
+                  <div class="scores-inputs" id="perf-row"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:18px;">
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-head-left">
+                  <div class="panel-icon pi-green">🏆</div>
+                  <div>
+                    <div class="panel-title-text">Score Summary</div>
+                    <div class="panel-subtitle">Auto-computed from scores</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="grade-summary">
+                  <div class="gs-col"><div class="gs-lbl">Quiz Avg</div><div class="gs-val" id="disp-quiz">—</div></div>
+                  <div class="gs-col"><div class="gs-lbl">Assign Avg</div><div class="gs-val" id="disp-assign">—</div></div>
+                  <div class="gs-col"><div class="gs-lbl">Perf Avg</div><div class="gs-val" id="disp-perf">—</div></div>
+                  <div class="gs-col"><div class="gs-lbl">Overall</div><div class="gs-val" id="disp-overall">—</div></div>
+                </div>
+                <div class="btn-row" style="margin-top:20px;">
+                  <button class="btn btn-ocean" onclick="saveRecord()">💾 Save Record</button>
+                  <button class="btn btn-ghost" onclick="resetForm()">↺ Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALL RECORDS -->
+      <section class="page-section" id="sec-records">
+        <div class="section-header">
+          <h2>All Student Records</h2>
+          <p>View, search, filter, and manage every student record.</p>
+        </div>
+        <div class="panel">
+          <div class="table-controls">
+            <div class="search-wrap">
+              <input type="text" id="searchInput" placeholder="Search by name or student ID…" oninput="renderTable()"/>
+            </div>
+            <select class="filter-sel" id="filterSection" onchange="renderTable()">
+              <option value="">All Sections</option>
+            </select>
+            <button class="btn btn-palm" style="padding:9px 16px; font-size:13px;" onclick="downloadCSV()">⬇ Export CSV</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Student</th><th>ID / LRN</th><th>Section</th>
+                  <th>Quiz Avg</th><th>Assign Avg</th><th>Perf Avg</th><th>Date</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState">
+              <div class="big">🌊</div>
+              <h3>No Records Found</h3>
+              <p>Add student records from the <strong>Add Student</strong> section,<br/>or adjust your search filters.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHEETS SETUP -->
+      <section class="page-section" id="sec-sheets">
+        <div class="section-header">
+          <h2>Google Sheets Integration</h2>
+          <p>Connect your Google Sheet to back up and sync all student records to the cloud.</p>
+        </div>
+        <div class="dash-grid">
+          <div style="display:flex; flex-direction:column; gap:18px;">
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-head-left">
+                  <div class="panel-icon pi-blue">🔗</div>
+                  <div>
+                    <div class="panel-title-text">Connection Settings</div>
+                    <div class="panel-subtitle">Your Apps Script URL</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="field" style="margin-bottom:14px;">
+                  <label>Google Apps Script Web App URL</label>
+                  <input type="url" id="gsUrlInput" placeholder="https://script.google.com/macros/s/…/exec"/>
+                </div>
+                <div class="btn-row" style="margin-top:0;">
+                  <button class="btn btn-ocean" onclick="connectSheets()">🔗 Connect</button>
+                  <button class="btn btn-palm" onclick="fetchFromSheets()">🔄 Fetch Records</button>
+                  <button class="btn btn-ghost" onclick="syncAll()">☁ Sync All</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-head-left">
+                  <div class="panel-icon pi-sand">📖</div>
+                  <div>
+                    <div class="panel-title-text">Setup Guide</div>
+                    <div class="panel-subtitle">Follow these steps</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="guide-steps">
+                  <div class="guide-step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                      <h4>Create a Google Sheet</h4>
+                      <p><a href="https://docs.google.com/spreadsheets/u/0/create" target="_blank">Click here</a> to create a new Google Sheet. Add headers in Row 1:</p>
+                      <div class="code-block">Timestamp | Name | StudentID | Course | Email | QuizAvg | AssignAvg | PerfAvg | Overall</div>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                      <h4>Open Apps Script</h4>
+                      <p>Go to <strong>Extensions → Apps Script</strong> and paste the provided code.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                      <h4>Deploy as Web App</h4>
+                      <p>Click <strong>Deploy → New Deployment → Web App</strong>. Set execute as <strong>Me</strong>, access <strong>Anyone</strong>.</p>
+                    </div>
+                  </div>
+                  <div class="guide-step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                      <h4>Paste URL &amp; Connect</h4>
+                      <p>Paste the Web App URL above and click Connect.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="align-self:start;">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-icon pi-green">📡</div>
+                <div>
+                  <div class="panel-title-text">Sync Status</div>
+                  <div class="panel-subtitle">Connection information</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body" style="display:flex; flex-direction:column; gap:14px;">
+              <div style="display:flex; align-items:center; gap:10px; padding:14px; background:var(--surface); border-radius:var(--r-md); border:1px solid var(--border);">
+                <div class="conn-dot local" id="sheetsConnDot" style="width:12px;height:12px;"></div>
+                <div>
+                  <div style="font-size:14px; font-weight:700; color:var(--text-primary);" id="sheetsConnStatus">Not Connected</div>
+                  <div style="font-size:12px; color:var(--text-tertiary); margin-top:2px;" id="sheetsConnUrl">No URL configured</div>
+                </div>
+              </div>
+              <div style="padding:14px; background:var(--surface); border-radius:var(--r-md); border:1px solid var(--border);">
+                <div style="font-size:12px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px;">Local Records</div>
+                <div style="font-family:'Lora',serif; font-size:32px; font-weight:700; color:var(--text-primary);" id="sheetsLocalCount">0</div>
+                <div style="font-size:13px; color:var(--text-tertiary); margin-top:2px;">records stored locally</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div id="toast-wrap"></div>
+<script src="script.js"></script>
+</body>
+</html>
